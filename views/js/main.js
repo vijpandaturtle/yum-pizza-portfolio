@@ -461,9 +461,11 @@ var resizePizzas = function(size) {
 window.performance.mark("mark_start_generating"); // collect timing data
 
 // This for-loop actually creates and appends all of the pizzas when the page loads
+/*Here we change document.querySelector to document.getElementById because the latter improves performance.This methodology
+applied to most of the other loops in the code.*/
+var pizzasDiv = document.getElementById("randomPizzas");
 for (var i = 2; i < 100; i++) {
-  var pizzasDiv = document.getElementById("randomPizzas");
-  pizzasDiv.appendChild(pizzaElementGenerator(i));
+    pizzasDiv.appendChild(pizzaElementGenerator(i));
 }
 
 // User Timing API again. These measurements tell you how long it took to generate the initial pizzas
@@ -490,14 +492,17 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
 // https://www.igvita.com/slides/2012/devtools-tips-and-tricks/jank-demo.html
 
 // Moves the sliding background pizzas based on scroll position
+/*The update positions function is called whenever the user scrolls the page, so it is better to get the querySelector and other get methods
+outside of the function for better performance*/
+var items = document.querySelectorAll('.mover');
+var scroll = document.body.scrollTop;
+var length = items.length;
 function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
-  var items = document.querySelectorAll('.mover');
-  for (var i = 0; i < items.length; i++) {
-      var scroll = document.body.scrollTop
+for (var i = 0; i < length ; i++) {
       var phase = Math.sin((scroll/1250) + (i % 5));
-      console.log(phase, scroll/1250);
+    //  console.log(phase, scroll/1250);
      items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
   }
 
@@ -515,10 +520,13 @@ function updatePositions() {
 window.addEventListener('scroll', updatePositions);
 
 // Generates the sliding pizzas when the page loads.
+//Since the DOM manipulation slows performance assigning getElementById to a variable outside of the loop is a much better option to improve performance.
+var pizzaSelect = document.getElementById("movingPizzas1");
 document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
   var s = 256;
-  for (var i = 0; i < 200; i++) {
+  //Here we are reducing the number of pizzas from 200 to 40 as most of them are unnecessary.
+  for (var i = 0; i < 40; i++) {
     var elem = document.createElement('img');
     elem.className = 'mover';
     elem.src = "images/pizza.png";
@@ -526,7 +534,7 @@ document.addEventListener('DOMContentLoaded', function() {
     elem.style.width = "73.333px";
     elem.basicLeft = (i % cols) * s;
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
-    document.querySelector("#movingPizzas1").appendChild(elem);
+    pizzaSelect.appendChild(elem);
   }
   updatePositions();
 });
