@@ -410,7 +410,7 @@ var resizePizzas = function(size) {
     }
   }
   //Here it is better to use getElementById instead of querySelector because the latter hampers the performance.
-  var pizzaSize = document.getElementById("#pizzaSize")
+  var pizzaSize = document.getElementById("pizzaSize");
    pizzaSize.innerHTML =  changeSliderLabel(size);
 
    // Returns the size difference to change a pizza element from one size to another. Called by changePizzaSlices(size).
@@ -439,13 +439,13 @@ var resizePizzas = function(size) {
     return dx;
   }
 
+   var newWidth = changeSliderLabel(size);
   // Iterates through pizza elements on the page and changes their widths
   function changePizzaSizes(size) {
     pizzaCont = document.querySelectorAll(".randomPizzaContainer")
-    for (var i = 0; i < pizzaCont.length; i++) {
-      var dx = determineDx(pizzaCont[i], size);
-      var newwidth = (pizzaCont[i].offsetWidth + dx) + 'px';
-      pizzaCont[i].style.width = newwidth;
+    pizzaLength = pizzaCont.length;
+    for (var i = 0; i < pizzaLength; i++) {
+      pizzaCont[i].style.width = newWidth + '%';
     }
   }
 
@@ -495,13 +495,14 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
 /*The update positions function is called whenever the user scrolls the page, so it is better to get the querySelector and other get methods
 outside of the function for better performance*/
 
-var items = document.querySelectorAll('.mover');
+
 function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
-  var scroll = document.body.scrollTop;
-for (var i = 0; i < items.length ; i++) {
-  var phase = Math.sin((scroll/1250) + (i % 5));
+  var items = document.getElementsByClassName('mover');
+  var length = items.length;
+  for (var i = 0; i < length; i++) {
+  var phase = Math.sin((document.body.scrollTop/1250) + (i % 5));
     //  console.log(phase, scroll/1250);
      items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
   }

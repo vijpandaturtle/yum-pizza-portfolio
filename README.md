@@ -1,7 +1,7 @@
 ## Website Performance Optimization portfolio project
 
 ####Getting Started
-####Part 2: Optimize Frames per Second in pizza.html
+
 
 You might find the FPS Counter/HUD Display useful in Chrome developer tools described here: [Chrome Dev Tools tips-and-tricks](https://developer.chrome.com/devtools/docs/tips-and-tricks).
 
