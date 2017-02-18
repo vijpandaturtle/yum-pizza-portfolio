@@ -435,17 +435,18 @@ var resizePizzas = function(size) {
 
     var newSize = sizeSwitcher(size);
     var dx = (newSize - oldSize) * windowWidth;
-
-    return dx;
+     return dx;
   }
 
-   var newWidth = changeSliderLabel(size);
   // Iterates through pizza elements on the page and changes their widths
   function changePizzaSizes(size) {
     pizzaCont = document.querySelectorAll(".randomPizzaContainer")
     pizzaLength = pizzaCont.length;
     for (var i = 0; i < pizzaLength; i++) {
-      pizzaCont[i].style.width = newWidth + '%';
+      //var dx = determineDx(pizzaCont[i], size);
+      var dx = determineDx(pizzaCont[i], size);
+      var newwidth = (pizzaCont[i].offsetWidth + dx) + 'px';
+      pizzaCont[i].style.width = newwidth;
     }
   }
 
@@ -503,9 +504,8 @@ function updatePositions() {
   var length = items.length;
   for (var i = 0; i < length; i++) {
   var phase = Math.sin((document.body.scrollTop/1250) + (i % 5));
-    //  console.log(phase, scroll/1250);
-     items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
-  }
+  items[i].style.transform = items[i].style.left + + 100 * phase + "px";
+ }
 
   // User Timing API to the rescue again. Seriously, it's worth learning.
   // Super easy to create custom metrics.
@@ -534,6 +534,7 @@ document.addEventListener('DOMContentLoaded', function() {
     elem.style.height = "100px";
     elem.style.width = "73.333px";
     elem.basicLeft = (i % cols) * s;
+    elem.style.left = elem.basicLeft;
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
     pizzaSelect.appendChild(elem);
   }
