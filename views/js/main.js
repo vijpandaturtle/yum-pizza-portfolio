@@ -504,7 +504,9 @@ function updatePositions() {
   var length = items.length;
   for (var i = 0; i < length; i++) {
   var phase = Math.sin((document.body.scrollTop/1250) + (i % 5));
-  items[i].style.transform = items[i].style.left + + 100 * phase + "px";
+  var centiphase = 100 * phase + "px";
+  //console.log(centiphase);
+  items[i].style.transform = "translateX(centiphase)";
  }
 
   // User Timing API to the rescue again. Seriously, it's worth learning.
@@ -534,7 +536,7 @@ document.addEventListener('DOMContentLoaded', function() {
     elem.style.height = "100px";
     elem.style.width = "73.333px";
     elem.basicLeft = (i % cols) * s;
-    elem.style.left = elem.basicLeft;
+    elem.style.left = elem.basicLeft + 'px';
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
     pizzaSelect.appendChild(elem);
   }
