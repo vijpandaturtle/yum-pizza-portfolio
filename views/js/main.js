@@ -502,8 +502,9 @@ function updatePositions() {
   window.performance.mark("mark_start_frame");
   var items = document.getElementsByClassName('mover');
   var length = items.length;
+  var scroll = document.body.scrollTop;
   for (var i = 0; i < length; i++) {
-  var phase = Math.sin((document.body.scrollTop/1250) + (i % 5));
+  var phase = Math.sin((scroll/1250) + (i % 5));
   var centiphase = 100 * phase + "px";
   //console.log(centiphase);
   items[i].style.transform = "translateX(centiphase)";
