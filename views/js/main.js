@@ -465,7 +465,7 @@ window.performance.mark("mark_start_generating"); // collect timing data
 /*Here we change document.querySelector to document.getElementById because the latter improves performance.This methodology
 applied to most of the other loops in the code.*/
 var pizzasDiv = document.getElementById("randomPizzas");
-for (var i = 2; i < 100; i++) {
+for (var i = 2; i < 40; i++) {
   pizzasDiv.appendChild(pizzaElementGenerator(i));
 }
 
@@ -496,18 +496,17 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
 /*The update positions function is called whenever the user scrolls the page, so it is better to get the querySelector and other get methods
 outside of the function for better performance*/
 
+var items = document.getElementsByClassName('mover');
 
 function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
-  var items = document.getElementsByClassName('mover');
-  var length = items.length;
   var scroll = document.body.scrollTop;
-  for (var i = 0; i < length; i++) {
+  var length = items.length;
+ for (var i = 0; i < length; i++) {
   var phase = Math.sin((scroll/1250) + (i % 5));
-  var centiphase = 100 * phase + "px";
-  //console.log(centiphase);
-  items[i].style.transform = "translateX(centiphase)";
+  //In this case transform and translate trigger only composite layer which makes them very efficient. Visit www.csstriggers.com for more details.
+  items[i].style.transform = "translateX(" + 100 * phase + "px)";
  }
 
   // User Timing API to the rescue again. Seriously, it's worth learning.
