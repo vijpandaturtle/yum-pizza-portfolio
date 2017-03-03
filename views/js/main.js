@@ -414,9 +414,11 @@ var resizePizzas = function(size) {
    pizzaSize.innerHTML =  changeSliderLabel(size);
 
    // Returns the size difference to change a pizza element from one size to another. Called by changePizzaSlices(size).
+   //Window select is collecting all elements with the id random pizzas so it dosen't
+  var windowSelect = document.getElementById("randomPizzas");
   function determineDx (elem, size) {
     var oldWidth = elem.offsetWidth;
-    var windowWidth = document.querySelector("#randomPizzas").offsetWidth;
+    var windowWidth = windowSelect.offsetWidth;
     var oldSize = oldWidth / windowWidth;
 
     // Changes the slider value to a percent width
@@ -465,7 +467,7 @@ window.performance.mark("mark_start_generating"); // collect timing data
 /*Here we change document.querySelector to document.getElementById because the latter improves performance.This methodology
 applied to most of the other loops in the code.*/
 var pizzasDiv = document.getElementById("randomPizzas");
-for (var i = 2; i < 40; i++) {
+for (var i = 2; i < 100; i++) {
   pizzasDiv.appendChild(pizzaElementGenerator(i));
 }
 
@@ -498,7 +500,7 @@ outside of the function for better performance*/
 
 var items = document.getElementsByClassName('mover');
 
-function updatePositions() {
+window.requestAnimationFrame(function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
   var scroll = document.body.scrollTop;
@@ -507,7 +509,7 @@ function updatePositions() {
   var phase = Math.sin((scroll/1250) + (i % 5));
   //In this case transform and translate trigger only composite layer which makes them very efficient. Visit www.csstriggers.com for more details.
   items[i].style.transform = "translateX(" + 100 * phase + "px)";
- }
+});
 
   // User Timing API to the rescue again. Seriously, it's worth learning.
   // Super easy to create custom metrics.
@@ -525,10 +527,10 @@ window.addEventListener('scroll', updatePositions);
 // Generates the sliding pizzas when the page loads.
 //Since the DOM manipulation slows performance assigning getElementById to a variable outside of the loop is a much better option to improve performance.
 var pizzaSelect = document.getElementById("movingPizzas1");
+var cols = 8;
+var s = 256;
 document.addEventListener('DOMContentLoaded', function() {
-  var cols = 8;
-  var s = 256;
-  //Here we are reducing the number of pizzas from 200 to 40 as most of them are unnecessary.
+//Here we are reducing the number of pizzas from 200 to 40 as most of them are unnecessary.
   for (var i = 0; i < 40; i++) {
     var elem = document.createElement('img');
     elem.className = 'mover';
