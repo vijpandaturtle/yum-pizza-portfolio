@@ -500,16 +500,16 @@ outside of the function for better performance*/
 
 var items = document.getElementsByClassName('mover');
 
-window.requestAnimationFrame(function updatePositions() {
+function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
   var scroll = document.body.scrollTop;
   var length = items.length;
- for (var i = 0; i < length; i++) {
-  var phase = Math.sin((scroll/1250) + (i % 5));
-  //In this case transform and translate trigger only composite layer which makes them very efficient. Visit www.csstriggers.com for more details.
-  items[i].style.transform = "translateX(" + 100 * phase + "px)";
-});
+  for (var i = 0; i < length; i++) {
+    var phase = Math.sin((scroll/1250) + (i % 5));
+    //In this case transform and translate trigger only composite layer which makes them very efficient. Visit www.csstriggers.com for more details.
+    items[i].style.transform = "translateX(" + 100 * phase + "px)";
+}
 
   // User Timing API to the rescue again. Seriously, it's worth learning.
   // Super easy to create custom metrics.
@@ -519,10 +519,12 @@ window.requestAnimationFrame(function updatePositions() {
     var timesToUpdatePosition = window.performance.getEntriesByName("measure_frame_duration");
     logAverageFrame(timesToUpdatePosition);
   }
-}
+};
 
 // runs updatePositions on scroll
-window.addEventListener('scroll', updatePositions);
+window.addEventListener('scroll', function(e) {
+  requestAnimationFrame(updatePositions);
+});
 
 // Generates the sliding pizzas when the page loads.
 //Since the DOM manipulation slows performance assigning getElementById to a variable outside of the loop is a much better option to improve performance.
@@ -542,5 +544,5 @@ document.addEventListener('DOMContentLoaded', function() {
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
     pizzaSelect.appendChild(elem);
   }
-  updatePositions();
+  requestAnimationFrame(updatePositions());
 });
