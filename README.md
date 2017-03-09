@@ -2,7 +2,7 @@
 
 ### About The Project
 
-This project is z based on Website Performance Optimization lesson by Udacity. It consists of two parts 
+This project is based on Website Performance Optimization. It consists of two parts 
 ```
 1. PageSpeedInsights Score
 2. 60 fps Project
@@ -14,4 +14,4 @@ code which affect performance. Get ready to optimize!!
 
 ### Getting Started
 
-
+1. To analyse PageSpeedInsightsScore[https://developers.google.com/speed/pagespeed/insights/]
