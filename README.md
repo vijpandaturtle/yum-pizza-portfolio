@@ -30,7 +30,7 @@ Since this webpage has been optimized on the chrome browser, I recommend you to 
 
 ### How I Optimized the Code
 
-1. ==For the first part of the project, I had to improve the initial load time. The best way to do that is to optimize the critical rendering path.==
+1. For the first part of the project, I had to improve the initial load time. The best way to do that is to optimize the critical rendering path.
  There are a number of methods to do this:
 
 * Inlining the css
@@ -38,7 +38,7 @@ Since this webpage has been optimized on the chrome browser, I recommend you to 
 * Using media queries for files that are used only in certain cases
 and many others ...which you will see in the code..
 
-2. ==Optimizing the javascript==
+2. Optimizing the javascript
 
 * Caching the elements in the loop that remain constant outside the loop.
 * Optimizing event isteners and animations by using requestAnimationFrame or other API's.
