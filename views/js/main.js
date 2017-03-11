@@ -414,9 +414,8 @@ var resizePizzas = function(size) {
    pizzaSize.innerHTML =  changeSliderLabel(size);
 
    // Returns the size difference to change a pizza element from one size to another. Called by changePizzaSlices(size).
-   //Window select is collecting all elements with the id random pizzas so it dosen't
-  var windowSelect = document.getElementById("randomPizzas");
-  function determineDx (elem, size) {
+   function determineDx (elem, size) {
+    var windowSelect = document.getElementById("randomPizzas");
     var oldWidth = elem.offsetWidth;
     var windowWidth = windowSelect.offsetWidth;
     var oldSize = oldWidth / windowWidth;
@@ -443,11 +442,9 @@ var resizePizzas = function(size) {
   // Iterates through pizza elements on the page and changes their widths
   function changePizzaSizes(size) {
     pizzaCont = document.getElementsByClassName("randomPizzaContainer");
-    pizzaLength = pizzaCont.length;
-    for (var i = 0; i < pizzaLength; i++) {
-      //var dx = determineDx(pizzaCont[i], size);
-      var dx = determineDx(pizzaCont[i], size);
-      var newwidth = (pizzaCont[i].offsetWidth + dx) + 'px';
+    var dx = determineDx(pizzaCont[0], size);
+    var newwidth = (pizzaCont[0].offsetWidth + dx) + 'px';
+    for (var i = 0, len = pizzaCont.length; i < len; i++) {
       pizzaCont[i].style.width = newwidth;
     }
   }
@@ -498,17 +495,20 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
 /*The update positions function is called whenever the user scrolls the page, so it is better to get the querySelector and other get methods
 outside of the function for better performance*/
 
-var items = document.getElementsByClassName('mover');
-
 function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
+  var items = document.getElementsByClassName('mover');
   var scroll = document.body.scrollTop;
   var length = items.length;
-  for (var i = 0; i < length; i++) {
+  var phases = [];
+  for(var i = 0; i < 5; i++) {
     var phase = Math.sin((scroll/1250) + (i % 5));
+    phases.push(phase);
+  }
+  for (var i = 0; i < length; i++) {
     //In this case transform and translate trigger only composite layer which makes them very efficient. Visit www.csstriggers.com for more details.
-    items[i].style.transform = "translateX(" + 100 * phase + "px)";
+    items[i].style.transform = "translateX(" + 100 * phases[i%5] + "px)";
 }
 
   // User Timing API to the rescue again. Seriously, it's worth learning.
@@ -523,17 +523,17 @@ function updatePositions() {
 
 // runs updatePositions on scroll
 window.addEventListener('scroll', function(e) {
-  requestAnimationFrame(updatePositions);
+  window.requestAnimationFrame(updatePositions);
 });
 
 // Generates the sliding pizzas when the page loads.
 //Since the DOM manipulation slows performance assigning getElementById to a variable outside of the loop is a much better option to improve performance.
-var pizzaSelect = document.getElementById("movingPizzas1");
-var cols = 8;
-var s = 256;
 document.addEventListener('DOMContentLoaded', function() {
-//Here we are reducing the number of pizzas from 200 to 40 as most of them are unnecessary.
-  for (var i = 0; i < 40; i++) {
+  var pizzaSelect = document.getElementById("movingPizzas1");
+  var cols = 8;
+  var s = 256;
+//Here we are reducing the number of pizzas from 200 to 32 as most of them are unnecessary.
+  for (var i = 0; i < 32; i++) {
     var elem = document.createElement('img');
     elem.className = 'mover';
     elem.src = "images/pizza.png";
@@ -544,5 +544,5 @@ document.addEventListener('DOMContentLoaded', function() {
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
     pizzaSelect.appendChild(elem);
   }
-  requestAnimationFrame(updatePositions());
+  window.requestAnimationFrame(updatePositions);
 });
